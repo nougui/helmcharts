@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "wireguard.fullname" . }}
+  labels:
+    {{- include "wireguard.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "wireguard.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ include "wireguard.fullname" . }}-udp"
+  labels:
+    {{- include "wireguard.labels" . | nindent 4 }}
+spec:
+  type: NodePort
+  ports:
+    - port: 51820
+      targetPort: 51820
+      nodePort: {{ .Values.wireguardService.port }}
+      protocol: UDP
+  selector:
+    {{- include "wireguard.selectorLabels" . | nindent 4 }}
+---

@@ -1,0 +1,1912 @@
+# Default values for crypto-port.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets: [ ]
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: { }
+  name: ""
+
+podAnnotations: { }
+
+podSecurityContext: { }
+
+securityContext: { }
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: { }
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: [ ]
+
+resources: { }
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: { }
+
+tolerations: [ ]
+
+affinity: { }
+
+frontendIngress:
+  enabled: false
+  className: ""
+  annotations: { }
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: [ ]
+
+swaggerIngress:
+  enabled: false
+  className: ""
+  annotations: { }
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: [ ]
+
+telegramIngress:
+  enabled: false
+  className: ""
+  annotations: { }
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: [ ]
+
+backendIngress:
+  enabled: false
+  className: ""
+  annotations: { }
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: [ ]
+
+jobs:
+  - name: 'total-asset-job'
+    schedule: '5 * * * *'
+    successfulJobsHistoryLimit: 1
+    failedJobsHistoryLimit: 1
+    backoffLimit: 2
+    jobUrl: 'http://crypto-port-job/api/v1/trigger-total-asset-job'
+    secret: 'job'
+
+secrets:
+  - name: "mongo"
+    values:
+      - name: 'MONGO_CONNECTION_STRING'
+        value: ''
+  - name: "redis-cache"
+    values:
+      - name: 'REDIS_CACHE_CONNECTION_STRING'
+        value: ''
+      - name: 'REDIS_CACHE_PASSWORD'
+        value: ''
+  - name: "binance"
+    values:
+      - name: 'BINANCE_ACCESS_TOKEN'
+        value: ''
+      - name: 'BINANCE_PRIVATE_TOKEN'
+        value: ''
+  - name: "common"
+    values:
+      - name: 'PORTFOLIO_UI_SERVICE_URL'
+        value: 'http://crypto-port-portfolio-ui'
+      - name: 'SWAGGER_SERVICE_URL'
+        value: 'http://crypto-port-swagger'
+      - name: 'TELEGRAMBOT_SERVICE_URL'
+        value: 'http://crypto-port-telegrambot'
+      - name: 'JOB_SERVICE_URL'
+        value: 'http://crypto-port-job'
+      - name: 'AVALANCHE_SERVICE_URL'
+        value: 'http://crypto-port-avalanche'
+      - name: 'BINANCE_SERVICE_URL'
+        value: 'http://crypto-port-binance'
+      - name: 'COINGECKO_SERVICE_URL'
+        value: 'http://crypto-port-coingecko'
+      - name: 'FIAT_SERVICE_URL'
+        value: 'http://crypto-port-fiat'
+      - name: 'GOLD_SERVICE_URL'
+        value: 'http://crypto-port-gold'
+      - name: 'HUOBI_SERVICE_URL'
+        value: 'http://crypto-port-huobi'
+      - name: 'KUCOIN_SERVICE_URL'
+        value: 'http://crypto-port-kucoin'
+      - name: 'PUZZLESWAP_SERVICE_URL'
+        value: 'http://crypto-port-puzzleswap'
+      - name: 'SWOPFI_SERVICE_URL'
+        value: 'http://crypto-port-swopfi'
+      - name: 'USER_SERVICE_URL'
+        value: 'http://crypto-port-user'
+      - name: 'VIRES_SERVICE_URL'
+        value: 'http://crypto-port-vires'
+      - name: 'WAVES_SERVICE_URL'
+        value: 'http://crypto-port-waves'
+      - name: 'WAVESDUCK_SERVICE_URL'
+        value: 'http://crypto-port-wavesduck'
+      - name: 'YIELDWATCH_SERVICE_URL'
+        value: 'http://crypto-port-yieldwatch'
+      - name: 'ZIL_SERVICE_URL'
+        value: 'http://crypto-port-zil'
+      - name: 'VENUS_SERVICE_URL'
+        value: 'http://crypto-port-venus'
+      - name: 'BSC_SERVICE_URL'
+        value: 'http://crypto-port-bsc'
+      - name: 'PANCAKE_SERVICE_URL'
+        value: 'http://crypto-port-pancake'
+      - name: 'BENQI_SERVICE_URL'
+        value: 'http://crypto-port-benqi'
+      - name: 'PORTFOLIO_UI_HOST_URL'
+        value: 'https://portfolio.nougui.net'
+      - name: 'SWAGGER_HOST_URL'
+        value: 'https://swagger.nougui.net'
+      - name: 'PORTFOLIO_API_HOST_URL'
+        value: 'https://portfolio-api.nougui.net'
+      - name: 'TELEGRAM_CRYPTO_HOST_URL'
+        value: 'https://telegram-crypto.nougui.net'
+  - name: "huobi"
+    values:
+      - name: 'HUOBI_ACCESS_TOKEN'
+        value: ''
+      - name: 'HUOBI_PRIVATE_TOKEN'
+        value: ''
+      - name: 'HUOBI_ACCOUNT_ID'
+        value: ''
+  - name: "job"
+    values:
+      - name: 'JOB_API_KEY'
+        value: ''
+  - name: "kucoin"
+    values:
+      - name: 'KUCOIN_SECRET'
+        value: ''
+      - name: 'KUCOIN_KEY'
+        value: ''
+      - name: 'KUCOIN_PASSPHRASE'
+        value: ''
+  - name: "react-app-common"
+    values:
+      - name: 'ENVIRONMENT'
+        value: 'Prod'
+      - name: 'REACT_APP_ENVIRONMENT'
+        value: 'Prod'
+      - name: 'REACT_APP_PORTFOLIO_UI_HOST_URL'
+        value: 'https://portfolio.nougui.net'
+      - name: 'REACT_APP_SWAGGER_HOST_URL'
+        value: 'https://swagger.nougui.net'
+      - name: 'REACT_APP_PORTFOLIO_API_HOST_URL'
+        value: 'https://portfolio-api.nougui.net'
+      - name: 'REACT_APP_TELEGRAM_CRYPTO_HOST_URL'
+        value: 'https://telegram-crypto.nougui.net'
+  - name: "swagger"
+    values:
+      - name: 'SWAGGER_API_URL_TELEGRAMBOT'
+        value: 'Telegram Bot#telegrambot'
+      - name: 'SWAGGER_API_URL_JOB'
+        value: 'Job#job'
+      - name: 'SWAGGER_API_URL_AVALANCHE'
+        value: 'Avalanche#avalanche'
+      - name: 'SWAGGER_API_URL_BINANCE'
+        value: 'Binance#binance'
+      - name: 'SWAGGER_API_URL_COINGECKO'
+        value: 'Coin Gecko#coingecko'
+      - name: 'SWAGGER_API_URL_FIAT'
+        value: 'Fiat#fiat'
+      - name: 'SWAGGER_API_URL_GOLD'
+        value: 'Gold#gold'
+      - name: 'SWAGGER_API_URL_HUOBI'
+        value: 'Huobi#huobi'
+      - name: 'SWAGGER_API_URL_KUCOIN'
+        value: 'Kucoin#kucoin'
+      - name: 'SWAGGER_API_URL_PUZZLESWAP'
+        value: 'Puzzle Swap#puzzleswap'
+      - name: 'SWAGGER_API_URL_SWOPFI'
+        value: 'SwopFi#swopfi'
+      - name: 'SWAGGER_API_URL_USER'
+        value: 'User#user'
+      - name: 'SWAGGER_API_URL_VIRES'
+        value: 'Vires#vires'
+      - name: 'SWAGGER_API_URL_WAVES'
+        value: 'Waves#waves'
+      - name: 'SWAGGER_API_URL_WAVESDUCK'
+        value: 'Waves Ducks#wavesduck'
+      - name: 'SWAGGER_API_URL_YIELDWATCH'
+        value: 'Yield Watch#yieldwatch'
+      - name: 'SWAGGER_API_URL_ZIL'
+        value: 'Zil#zil'
+      - name: 'SWAGGER_API_URL_VENUS'
+        value: 'Venus#venus'
+      - name: 'SWAGGER_API_URL_BSC'
+        value: 'Bsc#bsc'
+      - name: 'SWAGGER_API_URL_PANCAKE'
+        value: 'Pancake Swap#pancake'
+      - name: 'SWAGGER_API_URL_BENQI'
+        value: 'Benqi#benqi'
+  - name: "telegram"
+    values:
+      - name: 'TELEGRAM_TOKEN'
+        value: ''
+
+portfolio-ui:
+  image:
+    repository: 'docker.io/nogui/crypto-port-ui'
+    tag: 'latest'
+  internalPort: "80"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: 'REACT_APP_PORTFOLIO_UI_HOST_URL'
+      valueFrom: 'react-app-common'
+    - name: 'REACT_APP_SWAGGER_HOST_URL'
+      valueFrom: 'react-app-common'
+    - name: 'REACT_APP_PORTFOLIO_API_HOST_URL'
+      valueFrom: 'react-app-common'
+    - name: 'REACT_APP_TELEGRAM_CRYPTO_HOST_URL'
+      valueFrom: 'react-app-common'
+swagger:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-swagger'
+    tag: 'latest'
+  internalPort: "6001"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: SWAGGER_API_URL_TELEGRAMBOT
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_JOB
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_AVALANCHE
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_BINANCE
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_COINGECKO
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_FIAT
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_GOLD
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_HUOBI
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_KUCOIN
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_PUZZLESWAP
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_SWOPFI
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_USER
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_VIRES
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_WAVES
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_WAVESDUCK
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_YIELDWATCH
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_ZIL
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_VENUS
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_BSC
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_PANCAKE
+      valueFrom: swagger
+    - name: SWAGGER_API_URL_BENQI
+      valueFrom: swagger
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+telegrambot:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-telegrambot'
+    tag: 'latest'
+  internalPort: "6002"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: TELEGRAM_TOKEN
+      valueFrom: telegram
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+job:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-job'
+    tag: 'latest'
+  internalPort: "6003"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 1
+  secrets:
+    - name: JOB_API_KEY
+      valueFrom: job
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+avalanche:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-avalanche'
+    tag: 'latest'
+  internalPort: "7041"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+benqi:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-benqi'
+    tag: 'latest'
+  internalPort: "7042"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+binance:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-binance'
+    tag: 'latest'
+  internalPort: "7043"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: BINANCE_ACCESS_TOKEN
+      valueFrom: binance
+    - name: BINANCE_PRIVATE_TOKEN
+      valueFrom: binance
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+bsc:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-bsc'
+    tag: 'latest'
+  internalPort: "7044"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+coingecko:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-coingecko'
+    tag: 'latest'
+  internalPort: "7045"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+fiat:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-fiat'
+    tag: 'latest'
+  internalPort: "7046"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+gold:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-gold'
+    tag: 'latest'
+  internalPort: "7047"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+huobi:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-huobi'
+    tag: 'latest'
+  internalPort: "7048"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: HUOBI_ACCESS_TOKEN
+      valueFrom: huobi
+    - name: HUOBI_PRIVATE_TOKEN
+      valueFrom: huobi
+    - name: HUOBI_ACCOUNT_ID
+      valueFrom: huobi
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+kucoin:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-kucoin'
+    tag: 'latest'
+  internalPort: "7049"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: KUCOIN_SECRET
+      valueFrom: kucoin
+    - name: KUCOIN_KEY
+      valueFrom: kucoin
+    - name: KUCOIN_PASSPHRASE
+      valueFrom: kucoin
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+pancake:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-pancake'
+    tag: 'latest'
+  internalPort: "7050"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+puzzleswap:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-puzzleswap'
+    tag: 'latest'
+  internalPort: "7051"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+swopfi:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-swopfi'
+    tag: 'latest'
+  internalPort: "7052"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+user:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-user'
+    tag: 'latest'
+  internalPort: "7053"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+venus:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-venus'
+    tag: 'latest'
+  internalPort: "7054"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+vires:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-vires'
+    tag: 'latest'
+  internalPort: "7055"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+waves:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-waves'
+    tag: 'latest'
+  internalPort: "7056"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+wavesduck:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-wavesduck'
+    tag: 'latest'
+  internalPort: "7057"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+zil:
+  image:
+    repository: 'docker.io/nogui/crypto-port-backend-zil'
+    tag: 'latest'
+  internalPort: "7058"
+  autoscaling:
+    minReplicas: 1
+    maxReplicas: 2
+  secrets:
+    - name: PORTFOLIO_UI_SERVICE_URL
+      valueFrom: common
+    - name: SWAGGER_SERVICE_URL
+      valueFrom: common
+    - name: TELEGRAMBOT_SERVICE_URL
+      valueFrom: common
+    - name: JOB_SERVICE_URL
+      valueFrom: common
+    - name: AVALANCHE_SERVICE_URL
+      valueFrom: common
+    - name: BINANCE_SERVICE_URL
+      valueFrom: common
+    - name: COINGECKO_SERVICE_URL
+      valueFrom: common
+    - name: FIAT_SERVICE_URL
+      valueFrom: common
+    - name: GOLD_SERVICE_URL
+      valueFrom: common
+    - name: HUOBI_SERVICE_URL
+      valueFrom: common
+    - name: KUCOIN_SERVICE_URL
+      valueFrom: common
+    - name: PUZZLESWAP_SERVICE_URL
+      valueFrom: common
+    - name: SWOPFI_SERVICE_URL
+      valueFrom: common
+    - name: USER_SERVICE_URL
+      valueFrom: common
+    - name: VIRES_SERVICE_URL
+      valueFrom: common
+    - name: WAVES_SERVICE_URL
+      valueFrom: common
+    - name: WAVESDUCK_SERVICE_URL
+      valueFrom: common
+    - name: YIELDWATCH_SERVICE_URL
+      valueFrom: common
+    - name: ZIL_SERVICE_URL
+      valueFrom: common
+    - name: VENUS_SERVICE_URL
+      valueFrom: common
+    - name: BSC_SERVICE_URL
+      valueFrom: common
+    - name: PANCAKE_SERVICE_URL
+      valueFrom: common
+    - name: BENQI_SERVICE_URL
+      valueFrom: common
+    - name: PORTFOLIO_UI_HOST_URL
+      valueFrom: common
+    - name: SWAGGER_HOST_URL
+      valueFrom: common
+    - name: PORTFOLIO_API_HOST_URL
+      valueFrom: common
+    - name: TELEGRAM_CRYPTO_HOST_URL
+      valueFrom: common
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo
+    - name: REDIS_CACHE_CONNECTION_STRING
+      valueFrom: redis-cache
+    - name: REDIS_CACHE_PASSWORD
+      valueFrom: redis-cache
+    - name: MONGO_CONNECTION_STRING
+      valueFrom: mongo

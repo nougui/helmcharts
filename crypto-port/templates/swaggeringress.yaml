@@ -1,0 +1,39 @@
+{{- if .Values.swaggerIngress.enabled -}}
+{{- $fullName := include "crypto-port.fullname" . -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.swaggerIngress.name }}
+  labels:
+    {{- include "crypto-port.labels" . | nindent 4 }}
+  {{- with .Values.swaggerIngress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.swaggerIngress.tls }}
+  tls:
+    {{- range .Values.swaggerIngress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.swaggerIngress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            {{- end }}
+            backend:
+              service:
+                name: "{{ $fullName }}-{{ .serviceName }}"
+                port:
+                  number: {{ .port }}
+    {{- end }}
+{{- end }}

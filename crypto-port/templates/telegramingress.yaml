@@ -1,0 +1,39 @@
+{{- if .Values.telegramIngress.enabled -}}
+{{- $fullName := include "crypto-port.fullname" . -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.telegramIngress.name }}
+  labels:
+    {{- include "crypto-port.labels" . | nindent 4 }}
+  {{- with .Values.telegramIngress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.telegramIngress.tls }}
+  tls:
+    {{- range .Values.telegramIngress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.telegramIngress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            {{- end }}
+            backend:
+              service:
+                name: "{{ $fullName }}-{{ .serviceName }}"
+                port:
+                  number: {{ .port }}
+    {{- end }}
+{{- end }}

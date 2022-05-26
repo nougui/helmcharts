@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "puzzleswap.fullname" . }}-test-connection"
+  labels:
+    {{- include "puzzleswap.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "puzzleswap.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never

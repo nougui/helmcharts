@@ -1,0 +1,87 @@
+# Default values for external-ingress.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  tag: "1.21.6"
+
+imagePullSecrets: [ ]
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: { }
+  name: ""
+
+podAnnotations: { }
+
+podSecurityContext: { }
+
+securityContext: { }
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: { }
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: [ ]
+nginxConf: |
+  user nginx;
+  worker_processes  1;
+  events {
+    worker_connections  10240;
+  }
+  http {
+    server {
+      set $forward_scheme https;
+      set $server         "1.2.3.4";
+      set $port           1234;
+      listen 80;
+      listen [::]:80;
+      server_name *.example.local;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_set_header Connection $http_connection;
+      proxy_http_version 1.1;
+      location / {
+        proxy_read_timeout 300s;
+        proxy_connect_timeout 75s;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $http_connection;
+        proxy_http_version 1.1;
+        add_header       X-Served-By $host;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Scheme $scheme;
+        proxy_set_header X-Forwarded-Proto  $scheme;
+        proxy_set_header X-Forwarded-For    $remote_addr;
+        proxy_set_header X-Real-IP          $remote_addr;
+        proxy_pass       $forward_scheme://$server:$port$request_uri;
+      }
+    }
+  }
+
+resources: { }
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: { }
+
+tolerations: [ ]
+
+affinity: { }

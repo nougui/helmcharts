@@ -1,0 +1,35 @@
+{{- if .Values.jobs }}
+{{- range .Values.jobs }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .name }}
+  namespace: crypto-port
+spec:
+  schedule: {{ .schedule }}
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: {{ .successfulJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ .failedJobsHistoryLimit }}
+  jobTemplate:
+    spec:
+      backoffLimit: {{ .backoffLimit }}
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: {{ .name }}
+              image: buildpack-deps:curl
+              args:
+                - /bin/sh
+                - -ec
+                - exit_status=$(curl -v -o /dev/null -w '%{http_code}' {{ .jobUrl }} -H "x-auth-api-key:${JOB_API_KEY}"); if [ $exit_status -ne 200 ]; then exit 1; fi
+              env:
+                - name: JOB_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .secret }}
+                      key: JOB_API_KEY
+---
+{{- end }}
+{{- end }}
