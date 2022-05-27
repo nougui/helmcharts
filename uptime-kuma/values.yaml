@@ -1,6 +1,7 @@
 # Default values for uptime-kuma.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+nonce: 0
 
 replicaCount: 1
 
