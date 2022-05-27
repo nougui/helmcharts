@@ -5,4 +5,5 @@ metadata:
   labels:
     {{- include "external-ingress.labels" . | nindent 4 }}
 data:
-  nginx.conf: {{ .Values.nginxConf }}
+  nginx.conf: |
+   {{ .Values.nginxConf }}

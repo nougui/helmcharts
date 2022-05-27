@@ -38,8 +38,7 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls: [ ]
-nginxConf: |
-  user nginx;
+nginxConf: user nginx;
   worker_processes  1;
   events {
     worker_connections  10240;
