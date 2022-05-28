@@ -26,3 +26,4 @@ longhorn:
   defaultSettings:
     backupTarget: 's3://bucket@region/longhorn'
     backupTargetCredentialSecret: 's3-secret'
+    defaultLonghornStaticStorageClass: 'longhorn'
