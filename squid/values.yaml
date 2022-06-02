@@ -22,7 +22,7 @@ service:
   nodePort: 30002
 
 squidConf: |
-  auth_param basic program /usr/lib64/squid3/basic_ncsa_auth /etc/squid3/passwords
+  auth_param basic program /usr/lib/squid/basic_ncsa_auth /etc/squid3/passwords
   auth_param basic realm proxy
   acl authenticated proxy_auth REQUIRED
   http_access allow authenticated
