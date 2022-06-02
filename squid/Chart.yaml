@@ -1,0 +1,18 @@
+apiVersion: v2
+description: Squid Helm chart for Kubernetes
+name: squid
+version: 0.1.0
+appVersion: "0.1.0"
+kubeVersion: ">=1.16.0-0"
+keywords:
+  - squid
+home: https://github.com/Zekihan/helmcharts/tree/main/squid
+sources:
+  - https://hub.docker.com/r/ubuntu/squid
+maintainers:
+  - name: nougui
+    email: helmcharts@nougui.net
+annotations:
+  artifacthub.io/changes: |-
+    - kind: changed
+      description: added

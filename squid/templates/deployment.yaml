@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "squid.fullname" . }}
+  labels:
+    {{- include "squid.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "squid.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "squid.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "squid.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 3128
+              name: squid
+              protocol: TCP
+          volumeMounts:
+            - name: "{{ include "squid.fullname" . }}-conf"
+              mountPath: /etc/squid/squid.conf
+              subPath: squid.conf
+            - name: "{{ include "squid.fullname" . }}-auth"
+              mountPath: /etc/squid3/passwords
+              subPath: passwords
+            - name: {{ include "squid.fullname" . }}
+              mountPath: /var/spool/squid
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: "{{ include "squid.fullname" . }}-conf"
+          configMap:
+            name: {{ include "squid.fullname" . }}
+            items:
+              - key: squid
+                path: squid.conf
+        - name: "{{ include "squid.fullname" . }}-auth"
+          configMap:
+            name: "{{ include "squid.fullname" . }}-auth"
+            items:
+              - key: squid
+                path: passwords
+        - name: {{ include "squid.fullname" . }}
+          persistentVolumeClaim:
+            claimName: {{ include "squid.fullname" . }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

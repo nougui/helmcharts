@@ -1,0 +1,72 @@
+# Default values for squid.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+nonce: 0
+
+replicaCount: 1
+
+image:
+  repository: ubuntu/squid
+  pullPolicy: IfNotPresent
+  tag: "5.2-22.04_beta"
+
+persistentVolumeClaim:
+  enabled: true
+  storageClassName: longhorn
+  amount: 100Mi
+
+service:
+  type: NodePort
+  port: 3128
+  targetPort: 3128
+  nodePort: 30002
+
+squidConf: |
+  auth_param basic program /usr/lib/squid/basic_ncsa_auth /etc/squid3/passwords
+  auth_param basic realm proxy
+  acl authenticated proxy_auth REQUIRED
+  http_access allow authenticated
+  http_port 3128
+
+authConf: |
+  squid:$apr1$Us8ogwki$JAGWXGOFO0B5mHfplUQuY.
+
+imagePullSecrets: [ ]
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: { }
+  name: ""
+
+podAnnotations: { }
+
+podSecurityContext: { }
+
+securityContext: { }
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: { }
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: [ ]
+
+resources: { }
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: { }
+
+tolerations: [ ]
+
+affinity: { }
