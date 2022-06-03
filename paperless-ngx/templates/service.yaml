@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "paperless-ngx.fullname" . }}
+  labels:
+    {{- include "paperless-ngx.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "paperless-ngx.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.image.redis.name }}
+  labels:
+    service: {{ .Values.image.redis.name }}
+    {{- include "paperless-ngx.somelabels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 6379
+      targetPort: redis
+      protocol: TCP
+      name: redis
+  selector:
+    service: {{ .Values.image.redis.name }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.image.postgres.name }}
+  labels:
+    service: {{ .Values.image.postgres.name }}
+    {{- include "paperless-ngx.somelabels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 5432
+      targetPort: postgres
+      protocol: TCP
+      name: postgres
+  selector:
+    service: {{ .Values.image.postgres.name }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.image.gotenberg.name }}
+  labels:
+    service: {{ .Values.image.gotenberg.name }}
+    {{- include "paperless-ngx.somelabels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 3000
+      targetPort: gotenberg
+      protocol: TCP
+      name: gotenberg
+  selector:
+    service: {{ .Values.image.gotenberg.name }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.image.tika.name }}
+  labels:
+    service: {{ .Values.image.tika.name }}
+    {{- include "paperless-ngx.somelabels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 9998
+      targetPort: tika
+      protocol: TCP
+      name: tika
+  selector:
+    service: {{ .Values.image.tika.name }}

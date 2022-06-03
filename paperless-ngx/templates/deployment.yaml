@@ -1,0 +1,300 @@
+{{- $fullName := include "paperless-ngx.fullname" . -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paperless-ngx.fullname" . }}
+  labels:
+    {{- include "paperless-ngx.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "paperless-ngx.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "paperless-ngx.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "paperless-ngx.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ include "paperless-ngx.fullname" . }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.paperlessNgx.repository }}:{{ .Values.image.paperlessNgx.tag | default "latest" }}"
+          imagePullPolicy: {{ .Values.image.paperlessNgx.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          {{- if .Values.secrets.paperlessNgx.values }}
+          env:
+            {{- range .Values.secrets.paperlessNgx.values }}
+            - name: {{ .name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Values.secrets.paperlessNgx.name }}
+                  key: {{ .name }}
+            {{- end }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /usr/src/paperless/data
+              name: {{ .Values.persistence.paperlessNgx.name }}
+            - mountPath: /usr/src/paperless/media
+              name: {{ .Values.persistence.paperlessNgx.name }}
+            - mountPath: /usr/src/paperless/export
+              name: {{ .Values.persistence.paperlessNgx.name }}
+            - mountPath: /usr/src/paperless/consume
+              name: {{ .Values.persistence.paperlessNgx.name }}
+      volumes:
+        - name: {{ .Values.persistence.paperlessNgx.name }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.paperlessNgx.name }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.image.redis.name }}
+  labels:
+    service: {{ .Values.image.redis.name }}
+    {{- include "paperless-ngx.somelabels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      service: {{ .Values.image.redis.name }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        service: {{ .Values.image.redis.name }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "paperless-ngx.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Values.image.redis.name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.redis.repository }}:{{ .Values.image.redis.tag | default "latest" }}"
+          imagePullPolicy: {{ .Values.image.redis.pullPolicy }}
+          ports:
+            - name: redis
+              containerPort: 6379
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: redis
+          readinessProbe:
+            tcpSocket:
+              port: redis
+          {{- if .Values.secrets.redis.values }}
+          env:
+            {{- range .Values.secrets.redis.values }}
+            - name: {{ .name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Values.secrets.redis.name }}
+                  key: {{ .name }}
+            {{- end }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /data
+              name: {{ .Values.persistence.redis.name }}
+      volumes:
+        - name: {{ .Values.persistence.redis.name }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.redis.name }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.image.gotenberg.name }}
+  labels:
+    service: {{ .Values.image.gotenberg.name }}
+    {{- include "paperless-ngx.somelabels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      service: {{ .Values.image.gotenberg.name }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        service: {{ .Values.image.gotenberg.name }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "paperless-ngx.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Values.image.gotenberg.name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.gotenberg.repository }}:{{ .Values.image.gotenberg.tag | default "latest" }}"
+          imagePullPolicy: {{ .Values.image.gotenberg.pullPolicy }}
+          ports:
+            - name: gotenberg
+              containerPort: 3000
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: gotenberg
+          readinessProbe:
+            tcpSocket:
+              port: gotenberg
+          args:
+            - gotenberg
+            - --chromium-disable-routes=true
+          {{- if .Values.secrets.gotenberg.values }}
+          env:
+            {{- range .Values.secrets.gotenberg.values }}
+            - name: {{ .name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Values.secrets.gotenberg.name }}
+                  key: {{ .name }}
+            {{- end }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.image.tika.name }}
+  labels:
+    service: {{ .Values.image.tika.name }}
+    {{- include "paperless-ngx.somelabels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      service: {{ .Values.image.tika.name }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        service: {{ .Values.image.tika.name }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "paperless-ngx.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Values.image.tika.name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.tika.repository }}:{{ .Values.image.tika.tag | default "latest" }}"
+          imagePullPolicy: {{ .Values.image.tika.pullPolicy }}
+          ports:
+            - name: tika
+              containerPort: 9998
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: tika
+          readinessProbe:
+            tcpSocket:
+              port: tika
+          {{- if .Values.secrets.tika.values }}
+          env:
+            {{- range .Values.secrets.tika.values }}
+            - name: {{ .name }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Values.secrets.tika.name }}
+                  key: {{ .name }}
+            {{- end }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
