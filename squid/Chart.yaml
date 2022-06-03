@@ -1,6 +1,7 @@
 apiVersion: v2
 description: Squid Helm chart for Kubernetes
 name: squid
+type: application
 version: 0.1.0
 appVersion: "0.1.0"
 kubeVersion: ">=1.16.0-0"
@@ -12,7 +13,3 @@ sources:
 maintainers:
   - name: nougui
     email: helmcharts@nougui.net
-annotations:
-  artifacthub.io/changes: |-
-    - kind: changed
-      description: added
