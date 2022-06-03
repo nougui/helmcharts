@@ -1,13 +1,33 @@
 # Default values for crypto-port.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+nonce: 0
 
 replicaCount: 1
 
-image:
-  repository: nginx
-  pullPolicy: IfNotPresent
-  tag: ""
+versions:
+  avalanche: &avalancheVersion "0.3.13"
+  benqi: &benqiVersion "0.3.13"
+  binance: &binanceVersion "0.3.13"
+  bsc: &bscVersion "0.3.13"
+  coingecko: &coingeckoVersion "0.3.13"
+  fiat: &fiatVersion "0.3.13"
+  gold: &goldVersion "0.3.13"
+  huobi: &huobiVersion "0.3.13"
+  job: &jobVersion "0.3.13"
+  kucoin: &kucoinVersion "0.3.13"
+  pancake: &pancakeVersion "0.3.13"
+  portfolioui: &portfoliouiVersion "0.3.14"
+  puzzleswap: &puzzleswapVersion "0.3.13"
+  swagger: &swaggerVersion "0.3.13"
+  swopfi: &swopfiVersion "0.3.13"
+  telegrambot: &telegrambotVersion "0.3.13"
+  user: &userVersion "0.3.13"
+  venus: &venusVersion "0.3.13"
+  vires: &viresVersion "0.3.13"
+  waves: &wavesVersion "0.3.13"
+  wavesduck: &wavesduckVersion "0.3.13"
+  zil: &zilVersion "0.3.13"
 
 imagePullSecrets: [ ]
 nameOverride: ""
@@ -265,7 +285,7 @@ secrets:
 portfolio-ui:
   image:
     repository: 'docker.io/nogui/crypto-port-ui'
-    tag: 'latest'
+    tag: *portfoliouiVersion
   internalPort: "80"
   autoscaling:
     minReplicas: 1
@@ -282,7 +302,7 @@ portfolio-ui:
 swagger:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-swagger'
-    tag: 'latest'
+    tag: *swaggerVersion
   internalPort: "6001"
   autoscaling:
     minReplicas: 1
@@ -393,7 +413,7 @@ swagger:
 telegrambot:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-telegrambot'
-    tag: 'latest'
+    tag: *telegrambotVersion
   internalPort: "6002"
   autoscaling:
     minReplicas: 1
@@ -470,7 +490,7 @@ telegrambot:
 job:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-job'
-    tag: 'latest'
+    tag: *jobVersion
   internalPort: "6003"
   autoscaling:
     minReplicas: 1
@@ -547,7 +567,7 @@ job:
 avalanche:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-avalanche'
-    tag: 'latest'
+    tag: *avalancheVersion
   internalPort: "7041"
   autoscaling:
     minReplicas: 1
@@ -622,7 +642,7 @@ avalanche:
 benqi:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-benqi'
-    tag: 'latest'
+    tag: *benqiVersion
   internalPort: "7042"
   autoscaling:
     minReplicas: 1
@@ -697,7 +717,7 @@ benqi:
 binance:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-binance'
-    tag: 'latest'
+    tag: *binanceVersion
   internalPort: "7043"
   autoscaling:
     minReplicas: 1
@@ -776,7 +796,7 @@ binance:
 bsc:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-bsc'
-    tag: 'latest'
+    tag: *bscVersion
   internalPort: "7044"
   autoscaling:
     minReplicas: 1
@@ -851,7 +871,7 @@ bsc:
 coingecko:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-coingecko'
-    tag: 'latest'
+    tag: *coingeckoVersion
   internalPort: "7045"
   autoscaling:
     minReplicas: 1
@@ -926,7 +946,7 @@ coingecko:
 fiat:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-fiat'
-    tag: 'latest'
+    tag: *fiatVersion
   internalPort: "7046"
   autoscaling:
     minReplicas: 1
@@ -1001,7 +1021,7 @@ fiat:
 gold:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-gold'
-    tag: 'latest'
+    tag: *goldVersion
   internalPort: "7047"
   autoscaling:
     minReplicas: 1
@@ -1076,7 +1096,7 @@ gold:
 huobi:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-huobi'
-    tag: 'latest'
+    tag: *huobiVersion
   internalPort: "7048"
   autoscaling:
     minReplicas: 1
@@ -1157,7 +1177,7 @@ huobi:
 kucoin:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-kucoin'
-    tag: 'latest'
+    tag: *kucoinVersion
   internalPort: "7049"
   autoscaling:
     minReplicas: 1
@@ -1238,7 +1258,7 @@ kucoin:
 pancake:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-pancake'
-    tag: 'latest'
+    tag: *pancakeVersion
   internalPort: "7050"
   autoscaling:
     minReplicas: 1
@@ -1313,7 +1333,7 @@ pancake:
 puzzleswap:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-puzzleswap'
-    tag: 'latest'
+    tag: *puzzleswapVersion
   internalPort: "7051"
   autoscaling:
     minReplicas: 1
@@ -1388,7 +1408,7 @@ puzzleswap:
 swopfi:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-swopfi'
-    tag: 'latest'
+    tag: *swopfiVersion
   internalPort: "7052"
   autoscaling:
     minReplicas: 1
@@ -1463,7 +1483,7 @@ swopfi:
 user:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-user'
-    tag: 'latest'
+    tag: *userVersion
   internalPort: "7053"
   autoscaling:
     minReplicas: 1
@@ -1538,7 +1558,7 @@ user:
 venus:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-venus'
-    tag: 'latest'
+    tag: *venusVersion
   internalPort: "7054"
   autoscaling:
     minReplicas: 1
@@ -1613,7 +1633,7 @@ venus:
 vires:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-vires'
-    tag: 'latest'
+    tag: *viresVersion
   internalPort: "7055"
   autoscaling:
     minReplicas: 1
@@ -1688,7 +1708,7 @@ vires:
 waves:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-waves'
-    tag: 'latest'
+    tag: *wavesVersion
   internalPort: "7056"
   autoscaling:
     minReplicas: 1
@@ -1763,7 +1783,7 @@ waves:
 wavesduck:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-wavesduck'
-    tag: 'latest'
+    tag: *wavesduckVersion
   internalPort: "7057"
   autoscaling:
     minReplicas: 1
@@ -1838,7 +1858,7 @@ wavesduck:
 zil:
   image:
     repository: 'docker.io/nogui/crypto-port-backend-zil'
-    tag: 'latest'
+    tag: *zilVersion
   internalPort: "7058"
   autoscaling:
     minReplicas: 1
