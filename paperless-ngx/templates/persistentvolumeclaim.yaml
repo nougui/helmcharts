@@ -1,0 +1,24 @@
+{{- $labels := include "paperless-ngx.labels" . | nindent 4 -}}
+{{- if .Values.persistence }}
+{{ range .Values.persistence }}
+{{- if .name }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .name }}
+  labels:
+    {{- $labels }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  {{- if .storageClassName }}
+  storageClassName: "{{ .storageClassName }}"
+  {{- end }}
+  resources:
+    requests:
+      storage: "{{ .amount | default "100Mi" }}"
+---
+{{- end }}
+{{- end }}
+{{- end }}

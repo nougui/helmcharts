@@ -1,0 +1,156 @@
+# Default values for paperless-ngx.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+nonce: 1
+
+replicaCount: 1
+
+postgresql:
+  auth:
+    enablePostgresUser: true
+    postgresPassword: "paperless"
+    username: "paperless"
+    password: "paperless"
+    database: "paperless"
+  primary:
+    persistence:
+      enabled: true
+      existingClaim: "pg-data"
+  image:
+    repository: postgres
+    tag: "13"
+
+image:
+  paperlessNgx:
+    name: "paperless"
+    repository: "ghcr.io/paperless-ngx/paperless-ngx"
+    pullPolicy: IfNotPresent
+    tag: "1.7.1"
+  redis:
+    name: "paperless-broker"
+    repository: "redis"
+    pullPolicy: IfNotPresent
+    tag: "6"
+  postgres:
+    name: "paperless-db"
+    repository: "postgres"
+    pullPolicy: IfNotPresent
+    tag: "13"
+  gotenberg:
+    name: "paperless-gotenberg"
+    repository: "gotenberg/gotenberg"
+    pullPolicy: IfNotPresent
+    tag: "7.4"
+  tika:
+    name: "paperless-tika"
+    repository: "ghcr.io/paperless-ngx/tika"
+    pullPolicy: IfNotPresent
+    tag: "2.1.0-minimal"
+
+secrets:
+  paperlessNgx:
+    name: "paperless"
+    values:
+      - name: "PAPERLESS_DBHOST"
+        value: "paperless-postgresql"
+      - name: "PAPERLESS_DBPORT"
+        value: 5432
+      - name: "PAPERLESS_DBNAME"
+        value: "paperless"
+      - name: "PAPERLESS_DBUSER"
+        value: "paperless"
+      - name: "PAPERLESS_DBPASS"
+        value: "paperless"
+      - name: "PAPERLESS_OCR_LANGUAGE"
+        value: "tur"
+      - name: "PAPERLESS_OCR_LANGUAGES"
+        value: "tur eng"
+      - name: "PAPERLESS_REDIS"
+        value: "redis://paperless-broker:6379"
+      - name: "PAPERLESS_SECRET_KEY"
+        value: "Q7C@fByaNDjrjYVbjBAwZmX76CNaHGFJw7gerU&ZaQpBUDfpJx2iF44"
+      - name: "PAPERLESS_TIKA_ENABLED"
+        value: "1"
+      - name: "PAPERLESS_TIKA_ENDPOINT"
+        value: "http://paperless-tika:9998"
+      - name: "PAPERLESS_TIKA_GOTENBERG_ENDPOINT"
+        value: "http://paperless-gotenberg:3000"
+      - name: "PAPERLESS_URL"
+        value: "https://paperless.domain.com"
+      - name: "PAPERLESS_ADMIN_USER"
+        value: "paperless"
+      - name: "PAPERLESS_ADMIN_PASSWORD"
+        value: "paperless"
+      - name: "PAPERLESS_ADMIN_MAIL"
+        value: "paperless@domain.com"
+  redis: { }
+  postgres:
+    name: "postgres"
+    values:
+      - name: "POSTGRES_DB"
+        value: "paperless"
+      - name: "POSTGRES_PASSWORD"
+        value: "paperless"
+      - name: "POSTGRES_USER"
+        value: "paperless"
+  gotenberg: { }
+  tika: { }
+
+persistence:
+  paperlessNgx:
+    name: "paperless"
+    storageClassName: longhorn
+    amount: 1Gi
+  redis:
+    name: "redis-data"
+    storageClassName: longhorn
+    amount: 50Mi
+  postgres:
+    name: "pg-data"
+    storageClassName: longhorn
+    amount: 1Gi
+  gotenberg: { }
+  tika: { }
+
+imagePullSecrets: [ ]
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: { }
+  name: ""
+
+podAnnotations: { }
+
+podSecurityContext: { }
+
+securityContext: { }
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: { }
+  hosts:
+    - host: paperless.domain.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: [ ]
+
+resources: { }
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: { }
+
+tolerations: [ ]
+
+affinity: { }
