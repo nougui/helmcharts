@@ -2,8 +2,8 @@ apiVersion: v2
 description: Crypto Port Helm chart for Kubernetes
 name: crypto-port
 type: application
-version: 0.2.1
-appVersion: "0.2.1"
+version: 0.2.2
+appVersion: "0.2.2"
 kubeVersion: ">=1.16.0-0"
 keywords:
   - crypto-port
