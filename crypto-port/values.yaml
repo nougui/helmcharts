@@ -27,7 +27,7 @@ versions:
   vires: &viresVersion "0.3.13"
   waves: &wavesVersion "0.3.15"
   wavesduck: &wavesduckVersion "0.3.13"
-  zil: &zilVersion "0.3.14"
+  zil: &zilVersion "0.3.15"
 
 imagePullSecrets: [ ]
 nameOverride: ""
