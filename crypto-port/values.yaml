@@ -21,7 +21,7 @@ versions:
   puzzleswap: &puzzleswapVersion "0.3.13"
   swagger: &swaggerVersion "0.3.13"
   swopfi: &swopfiVersion "0.3.13"
-  telegrambot: &telegrambotVersion "0.3.14"
+  telegrambot: &telegrambotVersion "0.3.15"
   user: &userVersion "0.3.13"
   venus: &venusVersion "0.3.13"
   vires: &viresVersion "0.3.13"
