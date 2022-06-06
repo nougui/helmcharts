@@ -9,7 +9,7 @@ versions:
   avalanche: &avalancheVersion "0.3.13"
   benqi: &benqiVersion "0.3.13"
   binance: &binanceVersion "0.3.13"
-  bsc: &bscVersion "0.3.13"
+  bsc: &bscVersion "0.3.14"
   coingecko: &coingeckoVersion "0.3.13"
   fiat: &fiatVersion "0.3.13"
   gold: &goldVersion "0.3.13"
