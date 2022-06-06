@@ -17,7 +17,7 @@ versions:
   job: &jobVersion "0.3.13"
   kucoin: &kucoinVersion "0.3.13"
   pancake: &pancakeVersion "0.3.13"
-  portfolioui: &portfoliouiVersion "0.3.14"
+  portfolioui: &portfoliouiVersion "0.3.15"
   puzzleswap: &puzzleswapVersion "0.3.13"
   swagger: &swaggerVersion "0.3.13"
   swopfi: &swopfiVersion "0.3.13"
