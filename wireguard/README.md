@@ -1,25 +1,27 @@
 # helmcharts
 
-Install
+A chart for Wireguard. Wireguard Vpn with a dashboard.
+
+## Install
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" install wireguard .\ --namespace wireguard --create-namespace
+helm install wireguard .\ --namespace wireguard --create-namespace
 ```
 
-Upgrade
+## Upgrade
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" upgrade wireguard .\ --namespace wireguard      
+helm upgrade wireguard .\ --namespace wireguard      
 ```
 
-Uninstall
+## Uninstall
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" uninstall wireguard --namespace wireguard
+helm uninstall wireguard --namespace wireguard
 ```
 
-Delete Namespace
+## Delete Namespace
 
 ```bash
-kubectl --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" delete namespace wireguard
+kubectl delete namespace wireguard
 ```

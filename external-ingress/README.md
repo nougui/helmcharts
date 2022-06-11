@@ -1,25 +1,27 @@
 # helmcharts
 
-Install
+A chart for External Ingress. Useful for reverse proxying outside resources.
+
+## Install
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" install external-ingress .\ --namespace external-ingress --create-namespace
+helm install external-ingress .\ --namespace external-ingress --create-namespace
 ```
 
-Upgrade
+## Upgrade
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" upgrade external-ingress .\ --namespace external-ingress      
+helm upgrade external-ingress .\ --namespace external-ingress      
 ```
 
-Uninstall
+## Uninstall
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" uninstall external-ingress --namespace external-ingress
+helm uninstall external-ingress --namespace external-ingress
 ```
 
-Delete Namespace
+## Delete Namespace
 
 ```bash
-kubectl --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" delete namespace external-ingress
+kubectl delete namespace external-ingress
 ```
