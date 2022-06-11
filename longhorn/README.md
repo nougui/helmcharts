@@ -1,25 +1,27 @@
 # helmcharts
 
-Install
+A chart for Longhorn. Depends on longhorns chart and adds ingress and backup secrets.
+
+## Install
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" install longhorn .\ --namespace longhorn-system --create-namespace
+helm install longhorn .\ --namespace longhorn-system --create-namespace
 ```
 
-Upgrade
+## Upgrade
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" upgrade longhorn .\ --namespace longhorn-system
+helm upgrade longhorn .\ --namespace longhorn-system
 ```
 
-Uninstall
+## Uninstall
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" uninstall longhorn --namespace longhorn-system
+helm uninstall longhorn --namespace longhorn-system
 ```
 
-Delete Namespace
+## Delete Namespace
 
 ```bash
-kubectl --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" delete namespace longhorn
+kubectl delete namespace longhorn
 ```

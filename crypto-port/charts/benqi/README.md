@@ -1,6 +1,6 @@
-# helmcharts
+# crypto port benqi
 
-A chart for Crypto Portfolio application. This app helps keep track of your crypto portfolio.
+A sub chart of Crypto Portfolio application. Corresponds to benqi system.
 
 ## Install
 

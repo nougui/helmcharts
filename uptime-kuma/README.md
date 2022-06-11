@@ -1,25 +1,27 @@
 # helmcharts
 
-Install
+A chart for Uptime Kuma. Resource monitoring system.
+
+## Install
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" install uptime-kuma .\ --namespace uptime-kuma --create-namespace
+helm install uptime-kuma .\ --namespace uptime-kuma --create-namespace
 ```
 
-Upgrade
+## Upgrade
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" upgrade uptime-kuma .\ --namespace uptime-kuma
+helm upgrade uptime-kuma .\ --namespace uptime-kuma
 ```
 
-Uninstall
+## Uninstall
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" uninstall uptime-kuma --namespace uptime-kuma
+helm uninstall uptime-kuma --namespace uptime-kuma
 ```
 
-Delete Namespace
+## Delete Namespace
 
 ```bash
-kubectl --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" delete namespace uptime-kuma
+kubectl delete namespace uptime-kuma
 ```

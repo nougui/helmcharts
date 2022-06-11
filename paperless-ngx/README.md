@@ -1,25 +1,27 @@
 # helmcharts
 
-Install
+A chart for Paperless ngx. The document management system.
+
+## Install
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" install paperless .\ --namespace paperless --create-namespace
+helm install paperless .\ --namespace paperless --create-namespace
 ```
 
-Upgrade
+## Upgrade
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" upgrade paperless .\ --namespace paperless      
+helm upgrade paperless .\ --namespace paperless      
 ```
 
-Uninstall
+## Uninstall
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" uninstall paperless --namespace paperless
+helm uninstall paperless --namespace paperless
 ```
 
-Delete Namespace
+## Delete Namespace
 
 ```bash
-kubectl --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" delete namespace paperless
+kubectl delete namespace paperless
 ```

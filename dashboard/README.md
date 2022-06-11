@@ -1,25 +1,27 @@
 # helmcharts
 
-Install
+A chart for Kubernetes Dashboard. Admin user is created by chart.
+
+## Install
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" install kubernetes-dashboard ".\"
+helm install kubernetes-dashboard ".\"
 ```
 
-Upgrade
+## Upgrade
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" upgrade kubernetes-dashboard ".\"
+helm upgrade kubernetes-dashboard ".\"
 ```
 
-Uninstall
+## Uninstall
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" uninstall kubernetes-dashboard
+helm uninstall kubernetes-dashboard
 ```
 
-Delete Namespace
+## Delete Namespace
 
 ```bash
-kubectl --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" delete namespace kubernetes-dashboard
+kubectl delete namespace kubernetes-dashboard
 ```

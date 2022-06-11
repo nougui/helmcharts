@@ -1,25 +1,27 @@
 # helmcharts
 
-Install
+A chart for Vaultwarden. Password Manager.
+
+## Install
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" install vaultwarden .\ --namespace vaultwarden --create-namespace
+helm install vaultwarden .\ --namespace vaultwarden --create-namespace
 ```
 
-Upgrade
+## Upgrade
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" upgrade vaultwarden .\ --namespace vaultwarden      
+helm upgrade vaultwarden .\ --namespace vaultwarden      
 ```
 
-Uninstall
+## Uninstall
 
 ```bash
-helm --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" uninstall vaultwarden --namespace vaultwarden
+helm uninstall vaultwarden --namespace vaultwarden
 ```
 
-Delete Namespace
+## Delete Namespace
 
 ```bash
-kubectl --kubeconfig "C:\coding\secret\kubeconfigs\oracle-cluster-config" delete namespace vaultwarden
+kubectl delete namespace vaultwarden
 ```
