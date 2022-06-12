@@ -1,2 +1,19 @@
+# Default values for dashboard.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+nonce: 0
+
+image:
+  kubernetesDashboard:
+    name: "kubernetes-dashboard"
+    repository: "kubernetesui/dashboard"
+    pullPolicy: IfNotPresent
+    tag: "v2.6.0"
+  dashboardMetricsScraper:
+    name: "dashboard-metrics-scraper"
+    repository: "kubernetesui/metrics-scraper"
+    pullPolicy: IfNotPresent
+    tag: "v1.0.8"
+
 serviceAccount:
   name: admin-user
