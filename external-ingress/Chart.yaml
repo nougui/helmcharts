@@ -2,8 +2,8 @@ apiVersion: v2
 description: External Ingress Helm chart for Kubernetes
 name: external-ingress
 type: application
-version: 0.2.0
-appVersion: "0.2.0"
+version: 0.2.1
+appVersion: "0.2.1"
 kubeVersion: ">=1.16.0-0"
 keywords:
   - external-ingress
