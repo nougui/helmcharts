@@ -8,7 +8,7 @@ replicaCount: 1
 image:
   repository: louislam/uptime-kuma
   pullPolicy: IfNotPresent
-  tag: "1.17.0"
+  tag: "1.17.1"
   internalPort: 3001
 
 imagePullSecrets: [ ]
