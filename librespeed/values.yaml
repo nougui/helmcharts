@@ -1,9 +1,21 @@
 service:
-  port: 80
+  port: &port 80
+
+image:
+  repository: &imageRepository linuxserver/librespeed
+  tag: &imageTag version-5.2.4
+  pullPolicy: &imagePullPolicy IfNotPresent
+
+persistentVolumeClaim:
+  storageClassName: &storageClassName longhorn
+  config:
+    size: &configSize 100Mi
+
+env:
+  PASSWORD: &password password
 
 ingress:
   enabled: false
-  className: ""
   annotations: { }
   hosts:
     - host: chart-example.local
@@ -11,3 +23,23 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls: [ ]
+
+librespeed:
+  image:
+    repository: *imageRepository
+    tag: *imageTag
+    pullPolicy: *imagePullPolicy
+  service:
+    main:
+      ports:
+        http:
+          port: *port
+  env:
+    PASSWORD: *password
+  persistence:
+    config:
+      enabled: true
+      type: pvc
+      accessMode: ReadWriteOnce
+      size: *configSize
+      storageClass: *storageClassName
