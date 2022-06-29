@@ -1,0 +1,17 @@
+apiVersion: v2
+description: Librespeed Helm chart for Kubernetes
+name: librespeed
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+kubeVersion: ">=1.16.0-0"
+keywords:
+  - longhorn
+home: https://github.com/Zekihan/helmcharts/tree/main/librespeed
+maintainers:
+  - name: nougui
+    email: helmcharts@nougui.net
+dependencies:
+  - name: librespeed
+    version: 5.3.2
+    repository: https://k8s-at-home.com/charts/
