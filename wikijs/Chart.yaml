@@ -1,0 +1,17 @@
+apiVersion: v2
+description: Wikijs Helm chart for Kubernetes
+name: wikijs
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+kubeVersion: ">=1.16.0-0"
+keywords:
+  - longhorn
+home: https://github.com/Zekihan/helmcharts/tree/main/wikijs
+maintainers:
+  - name: nougui
+    email: helmcharts@nougui.net
+dependencies:
+  - name: wikijs
+    version: 6.3.2
+    repository: https://k8s-at-home.com/charts/

@@ -1,0 +1,6 @@
+dependencies:
+- name: wikijs
+  repository: https://k8s-at-home.com/charts/
+  version: 6.3.2
+digest: sha256:0514704562878f205761de143b77396152155e7a0d9618fcb51c0da62fde2581
+generated: "2022-06-30T00:23:44.6276506+03:00"
