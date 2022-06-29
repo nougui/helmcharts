@@ -1,0 +1,49 @@
+service:
+  port: &port 3000
+
+image:
+  repository: &imageRepository ghcr.io/linuxserver/wikijs
+  tag: &imageTag version-2.5.201
+  pullPolicy: &imagePullPolicy IfNotPresent
+
+persistentVolumeClaim:
+  storageClassName: &storageClassName longhorn
+  config:
+    size: &configSize 100Mi
+  data:
+    size: &dataSize 500Mi
+
+ingress:
+  enabled: false
+  annotations: { }
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: [ ]
+
+wikijs:
+  image:
+    repository: *imageRepository
+    tag: *imageTag
+    pullPolicy: *imagePullPolicy
+  service:
+    main:
+      ports:
+        http:
+          port: *port
+  persistence:
+    config:
+      enabled: true
+      type: pvc
+      accessMode: ReadWriteOnce
+      size: *configSize
+      storageClass: *storageClassName
+    data:
+      enabled: true
+      type: pvc
+      accessMode: ReadWriteOnce
+      size: *dataSize
+      storageClass: *storageClassName
+      mountPath: /data
