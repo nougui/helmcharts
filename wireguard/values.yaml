@@ -16,7 +16,7 @@ initContainers:
 image:
   repository: weejewel/wg-easy
   pullPolicy: IfNotPresent
-  tag: "6"
+  tag: "7"
 
 secrets:
   name: ""
