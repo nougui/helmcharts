@@ -1,3 +1,5 @@
+nonce: 0
+
 service:
   port: &port 80
 
