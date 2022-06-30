@@ -4,7 +4,7 @@ replicaCount: 1
 
 image:
   repository: adguard/adguardhome
-  tag: v0.106.3
+  tag: v0.107.7
   pullPolicy: IfNotPresent
   ingressPort: &ingressPort 3000
   ingressServiceName: &ingressServiceName http
