@@ -1,0 +1,25 @@
+{{- $fullName := include "adguard.fullname" . -}}
+{{- $labels := include "adguard.labels" . | nindent 4 -}}
+{{- $selectorLabels := include "adguard.selectorLabels" . | nindent 4 -}}
+{{- if .Values.image.ports }}
+{{- range .Values.image.ports }}
+{{- if .service.enable }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ $fullName }}-{{ .name }}"
+  labels:
+    {{- $labels }}
+spec:
+  type: {{ .service.type }}
+  ports:
+    - port: {{ .service.port }}
+      targetPort: {{ .service.port }}
+      protocol: {{ .protocol }}
+      name: {{ .name }}
+  selector:
+    {{- $selectorLabels }}
+---
+{{- end }}
+{{- end }}
+{{- end }}

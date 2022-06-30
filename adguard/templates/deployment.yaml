@@ -1,0 +1,120 @@
+{{- $fullName := include "adguard.fullname" . -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "adguard.fullname" . }}
+  labels:
+    {{- include "adguard.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "adguard.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "adguard.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "adguard.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: init
+          image: "{{ .Values.initContainers.image.repository }}:{{ .Values.initContainers.image.tag | default "latest" }}"
+          {{- with .Values.initContainers.image.command }}
+          command:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          volumeMounts:
+            - mountPath: /tmp/AdGuardHome.yaml
+              name: "{{ $fullName }}-config"
+              subPath: AdGuardHome.yaml
+            - mountPath: /opt/adguardhome/conf
+              name: "{{ $fullName }}-data"
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.image.args }}
+          args:
+            {{- range .Values.image.args }}
+            - {{ . }}
+            {{- end }}
+          {{- end }}
+          {{- if .Values.image.ports }}
+          ports:
+            {{- range .Values.image.ports }}
+            {{- if .name }}
+            - name: {{ .name }}
+            {{- end }}
+            {{- if .containerPort }}
+              containerPort: {{ .containerPort }}
+            {{- end }}
+            {{- if .protocol }}
+              protocol: {{ .protocol }}
+            {{- end }}
+            {{- if .hostPort }}
+              hostPort: {{ .hostPort }}
+            {{- end }}
+            {{- end }}
+          {{- end }}
+          volumeMounts:
+            - name: "{{ $fullName }}-config"
+              mountPath: /tmp/AdGuardHome.yaml
+              subPath: AdGuardHome.yaml
+            - name: "{{ $fullName }}-data"
+              mountPath: /opt/adguardhome/conf
+          livenessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 0
+            failureThreshold: 3
+            timeoutSeconds: 1
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 0
+            failureThreshold: 3
+            timeoutSeconds: 1
+            periodSeconds: 10
+          startupProbe:
+            tcpSocket:
+              port: 3000
+            initialDelaySeconds: 0
+            failureThreshold: 30
+            timeoutSeconds: 1
+            periodSeconds: 5
+      volumes:
+        - name: "{{ $fullName }}-config"
+          configMap:
+            name: "{{ $fullName }}-config"
+        - name: "{{ $fullName }}-data"
+          persistentVolumeClaim:
+            claimName: "{{ $fullName }}-data"
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

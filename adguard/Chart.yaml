@@ -1,0 +1,13 @@
+apiVersion: v2
+description: Adguard Helm chart for Kubernetes
+name: adguard
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+kubeVersion: ">=1.16.0-0"
+keywords:
+  - adguard
+home: https://github.com/Zekihan/helmcharts/tree/main/adguard
+maintainers:
+  - name: nougui
+    email: helmcharts@nougui.net
