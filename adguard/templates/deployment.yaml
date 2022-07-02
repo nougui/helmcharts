@@ -1,4 +1,5 @@
 {{- $fullName := include "adguard.fullname" . -}}
+{{- $svcPort := .Values.image.ingressPort -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -80,21 +81,21 @@ spec:
               mountPath: /opt/adguardhome/conf
           livenessProbe:
             tcpSocket:
-              port: 3000
+              port: {{ $svcPort }}
             initialDelaySeconds: 0
             failureThreshold: 3
             timeoutSeconds: 1
             periodSeconds: 10
           readinessProbe:
             tcpSocket:
-              port: 3000
+              port: {{ $svcPort }}
             initialDelaySeconds: 0
             failureThreshold: 3
             timeoutSeconds: 1
             periodSeconds: 10
           startupProbe:
             tcpSocket:
-              port: 3000
+              port: {{ $svcPort }}
             initialDelaySeconds: 0
             failureThreshold: 30
             timeoutSeconds: 1
