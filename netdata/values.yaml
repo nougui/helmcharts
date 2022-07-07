@@ -1,0 +1,13 @@
+netdata:
+  ingress:
+    enabled: false
+  parent:
+    claiming:
+      enabled: true
+      token: token
+      rooms:
+  child:
+    claiming:
+      enabled: true
+      token: token
+      rooms:

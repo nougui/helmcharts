@@ -1,0 +1,16 @@
+apiVersion: v2
+description: netdata Helm chart for Kubernetes
+name: netdata
+type: application
+version: 0.0.1
+kubeVersion: ">=1.16.0-0"
+keywords:
+  - netdata
+home: https://github.com/Zekihan/helmcharts/tree/main/netdata
+maintainers:
+  - name: nougui
+    email: helmcharts@nougui.net
+dependencies:
+  - name: netdata
+    version: 3.7.22
+    repository: https://netdata.github.io/helmchart/
