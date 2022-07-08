@@ -10,7 +10,3 @@ home: https://github.com/Zekihan/helmcharts/tree/main/reflector
 maintainers:
   - name: nougui
     email: helmcharts@nougui.net
-dependencies:
-  - name: reflector
-    version: 6.1.47
-    repository: https://emberstack.github.io/helm-charts

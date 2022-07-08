@@ -1,0 +1,4 @@
+image:
+  repository: nougui/crypto-price
+  tag: 0.0.1
+  pullPolicy: IfNotPresent
