@@ -10,3 +10,7 @@ home: https://github.com/Zekihan/helmcharts/tree/main/reflector
 maintainers:
   - name: nougui
     email: helmcharts@nougui.net
+dependencies:
+  - name: kubernetes-replicator
+    version: 2.7.3
+    repository: https://helm.mittwald.de
