@@ -3,7 +3,6 @@ description: Longhorn Helm chart for Kubernetes
 name: longhorn
 type: application
 version: 0.2.0
-appVersion: "0.2.0"
 kubeVersion: ">=1.16.0-0"
 keywords:
   - longhorn

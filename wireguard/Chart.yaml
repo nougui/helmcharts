@@ -3,7 +3,6 @@ description: Wireguard Helm chart for Kubernetes
 name: wireguard
 type: application
 version: 0.2.3
-appVersion: "0.2.3"
 kubeVersion: ">=1.16.0-0"
 keywords:
   - wireguard

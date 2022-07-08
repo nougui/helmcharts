@@ -3,7 +3,6 @@ description: Crypto Port Coingecko Helm chart for Kubernetes
 name: coingecko
 version: 0.1.0
 type: application
-appVersion: "0.1.0"
 kubeVersion: ">=1.16.0-0"
 keywords:
   - crypto-port

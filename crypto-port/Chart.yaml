@@ -3,7 +3,6 @@ description: Crypto Port Helm chart for Kubernetes
 name: crypto-port
 type: application
 version: 0.2.5
-appVersion: "0.2.5"
 kubeVersion: ">=1.16.0-0"
 keywords:
   - crypto-port

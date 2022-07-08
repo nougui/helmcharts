@@ -3,7 +3,6 @@ description: Vaultwarden Helm chart for Kubernetes
 name: vaultwarden
 type: application
 version: 0.2.1
-appVersion: "0.2.1"
 kubeVersion: ">=1.16.0-0"
 keywords:
   - vaultwarden
