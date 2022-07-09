@@ -5,23 +5,11 @@ A sub chart of Crypto Portfolio application. Corresponds to swopfi system.
 ## Install
 
 ```bash
-helm install crypto-port .\ --namespace crypto-port --create-namespace
-```
-
-## Upgrade
-
-```bash
-helm upgrade crypto-port .\ --namespace crypto-port
+helm upgrade --install crypto-port .\ --namespace crypto-port --create-namespace
 ```
 
 ## Uninstall
 
 ```bash
 helm uninstall crypto-port --namespace crypto-port
-```
-
-## Delete Namespace
-
-```bash
-kubectl delete namespace crypto-port
 ```

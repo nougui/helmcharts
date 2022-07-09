@@ -5,23 +5,11 @@ A chart for Longhorn. Depends on longhorns chart and adds ingress and backup sec
 ## Install
 
 ```bash
-helm install longhorn .\ --namespace longhorn-system --create-namespace
-```
-
-## Upgrade
-
-```bash
-helm upgrade longhorn .\ --namespace longhorn-system
+helm upgrade --install longhorn .\ --namespace longhorn-system --create-namespace
 ```
 
 ## Uninstall
 
 ```bash
 helm uninstall longhorn --namespace longhorn-system
-```
-
-## Delete Namespace
-
-```bash
-kubectl delete namespace longhorn
 ```

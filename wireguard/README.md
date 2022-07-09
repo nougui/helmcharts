@@ -5,23 +5,11 @@ A chart for Wireguard. Wireguard Vpn with a dashboard.
 ## Install
 
 ```bash
-helm install wireguard .\ --namespace wireguard --create-namespace
-```
-
-## Upgrade
-
-```bash
-helm upgrade wireguard .\ --namespace wireguard      
+helm upgrade --install wireguard .\ --namespace wireguard --create-namespace
 ```
 
 ## Uninstall
 
 ```bash
 helm uninstall wireguard --namespace wireguard
-```
-
-## Delete Namespace
-
-```bash
-kubectl delete namespace wireguard
 ```

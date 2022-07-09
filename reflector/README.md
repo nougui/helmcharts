@@ -5,23 +5,11 @@ A chart for Reflector. Depends on reflectors chart and adds ingress and backup s
 ## Install
 
 ```bash
-helm install reflector .\ --namespace reflector --create-namespace
-```
-
-## Upgrade
-
-```bash
-helm upgrade reflector .\ --namespace reflector
+helm upgrade --install reflector .\ --namespace reflector --create-namespace
 ```
 
 ## Uninstall
 
 ```bash
 helm uninstall reflector --namespace reflector
-```
-
-## Delete Namespace
-
-```bash
-kubectl delete namespace reflector
 ```

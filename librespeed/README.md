@@ -5,23 +5,11 @@ A chart for Librespeed. Depends on librespeed chart and adds ingress and backup 
 ## Install
 
 ```bash
-helm install librespeed .\ --namespace librespeed --create-namespace
-```
-
-## Upgrade
-
-```bash
-helm upgrade librespeed .\ --namespace librespeed
+helm upgrade --install librespeed .\ --namespace librespeed --create-namespace
 ```
 
 ## Uninstall
 
 ```bash
 helm uninstall librespeed --namespace librespeed
-```
-
-## Delete Namespace
-
-```bash
-kubectl delete namespace librespeed
 ```
