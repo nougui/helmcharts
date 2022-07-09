@@ -1,0 +1,12 @@
+apiVersion: v2
+description: Smokeping Helm chart for Kubernetes
+name: smokeping
+type: application
+version: 0.0.1
+kubeVersion: ">=1.16.0-0"
+keywords:
+  - smokeping
+home: https://github.com/Zekihan/helmcharts/tree/main/smokeping
+maintainers:
+  - name: nougui
+    email: helmcharts@nougui.net
