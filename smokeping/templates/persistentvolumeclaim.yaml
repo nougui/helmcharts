@@ -1,0 +1,41 @@
+---
+{{- if .Values.persistence.data -}}
+{{- if eq .Values.persistence.data.type "pvc" }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ include "smokeping.fullname" . }}-data"
+  labels:
+    {{- include "smokeping.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  {{- if .Values.persistence.data.storageClass }}
+  storageClassName: "{{ .Values.persistence.data.storageClass }}"
+  {{- end }}
+  resources:
+    requests:
+      storage: "{{ .Values.persistence.data.size | default "100Mi" }}"
+{{- end }}
+{{- end }}
+---
+{{- if .Values.persistence.config -}}
+{{- if eq .Values.persistence.config.type "pvc" -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ include "smokeping.fullname" . }}-config"
+  labels:
+    {{- include "smokeping.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  {{- if .Values.persistence.data.storageClass }}
+  storageClassName: "{{ .Values.persistence.data.storageClass }}"
+  {{- end }}
+  resources:
+    requests:
+      storage: "{{ .Values.persistence.data.size | default "100Mi" }}"
+{{- end }}
+{{- end }}
+---
