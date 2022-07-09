@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: lscr.io/linuxserver/code-server
   pullPolicy: IfNotPresent
-  tag: "latest"
+  tag: 4.5.0
 
 secrets:
   name: ""
