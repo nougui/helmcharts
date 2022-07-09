@@ -47,6 +47,9 @@ spec:
             httpGet:
               path: /
               port: http
+          volumeMounts:
+            - name: "{{ $fullName }}-data"
+              mountPath: /config
           {{- if .Values.secrets.values }}
           env:
             {{- range .Values.secrets.values }}
@@ -59,6 +62,10 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: "{{ $fullName }}-data"
+          persistentVolumeClaim:
+            claimName: "{{ $fullName }}-data"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
