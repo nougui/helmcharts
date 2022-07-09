@@ -1,0 +1,40 @@
+{{- if .Values.persistence.data -}}
+{{- if eq .Values.persistence.data.type "pvc" }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ include "sqlitebrowser.fullname" . }}-data"
+  labels:
+    {{- include "sqlitebrowser.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  {{- if .Values.persistence.data.storageClass }}
+  storageClassName: "{{ .Values.persistence.data.storageClass }}"
+  {{- end }}
+  resources:
+    requests:
+      storage: "{{ .Values.persistence.data.size | default "100Mi" }}"
+---
+{{- end }}
+{{- end }}
+{{- if .Values.persistence.config -}}
+{{- if eq .Values.persistence.config.type "pvc" -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "{{ include "sqlitebrowser.fullname" . }}-config"
+  labels:
+    {{- include "sqlitebrowser.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  {{- if .Values.persistence.config.storageClass }}
+  storageClassName: "{{ .Values.persistence.config.storageClass }}"
+  {{- end }}
+  resources:
+    requests:
+      storage: "{{ .Values.persistence.config.size | default "100Mi" }}"
+---
+{{- end }}
+{{- end }}
