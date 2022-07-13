@@ -17,12 +17,15 @@ image:
       internal:
         port: 6379
         name: redis
+    command:
+      - redis-server
+      - --save 20 1 --loglevel warning
     ingress:
       enabled: false
   price:
     repository: nougui/crypto-price
     pullPolicy: IfNotPresent
-    tag: 0.1.2
+    tag: 0.1.4
     service:
       enabled: true
       type: ClusterIP
@@ -43,7 +46,7 @@ image:
   bot:
     repository: nougui/cryptoprice-telegrambot
     pullPolicy: IfNotPresent
-    tag: 0.0.1
+    tag: 0.0.3
     service:
       enabled: true
       type: ClusterIP

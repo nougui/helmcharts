@@ -53,6 +53,10 @@ spec:
             failureThreshold: 3
             timeoutSeconds: 1
             periodSeconds: 10
+          {{- with .Values.image.redis.command }}
+          command:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           {{- if .Values.image.redis.env }}
           env:
             {{- range .Values.image.redis.env }}
