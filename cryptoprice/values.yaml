@@ -1,0 +1,94 @@
+# Default values for cryptoprice.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  redis:
+    repository: redis
+    pullPolicy: IfNotPresent
+    tag: 6.2-alpine
+    autoscaling:
+      replicaCount: 1
+      enabled: false
+    service:
+      enabled: true
+      type: ClusterIP
+      port: 6379
+      internal:
+        port: 6379
+        name: redis
+    ingress:
+      enabled: false
+  price:
+    repository: nougui/crypto-price
+    pullPolicy: IfNotPresent
+    tag: 0.1.2
+    service:
+      enabled: true
+      type: ClusterIP
+      port: 80
+      internal:
+        port: 3000
+        name: http
+    autoscaling:
+      replicaCount: 1
+      enabled: false
+    env:
+      - name: REDIS_HOST
+        value: cryptoprice-redis
+      - name: REDIS_PORT
+        value: 6379
+    ingress:
+      enabled: false
+  bot:
+    repository: nougui/cryptoprice-telegrambot
+    pullPolicy: IfNotPresent
+    tag: 0.0.1
+    service:
+      enabled: true
+      type: ClusterIP
+      port: 80
+      internal:
+        port: 3000
+        name: http
+    autoscaling:
+      replicaCount: 1
+      enabled: false
+    env:
+      - name: REDIS_HOST
+        value: cryptoprice-redis
+      - name: REDIS_PORT
+        value: 6379
+      - name: ENVIRONMENT
+        value: Prod
+      - name: PRICE_API
+        value: http://cryptoprice-price
+      - name: TELEGRAM_WEBHOOK
+        value: https://bot.domain.tld
+      - name: TELEGRAM_TOKEN
+        value: "token"
+    ingress:
+      enabled: false
+
+imagePullSecrets: [ ]
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: { }
+  name: ""
+
+podAnnotations: { }
+
+podSecurityContext: { }
+
+securityContext: { }
+
+resources: { }
+
+nodeSelector: { }
+
+tolerations: [ ]
+
+affinity: { }
