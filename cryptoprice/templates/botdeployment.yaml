@@ -1,0 +1,184 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{ include "cryptoprice.fullname" . }}-bot"
+  labels:
+    cryptoprice.appName: "{{ include "cryptoprice.fullname" . }}-bot"
+    {{- include "cryptoprice.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.image.bot.autoscaling.enabled }}
+  replicas: {{ .Values.image.bot.autoscaling.replicaCount | default 1 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      cryptoprice.appName: "{{ include "cryptoprice.fullname" . }}-bot"
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        cryptoprice.appName: "{{ include "cryptoprice.fullname" . }}-bot"
+        {{- include "cryptoprice.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "cryptoprice.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: "{{ .Chart.Name }}-bot"
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.bot.repository }}:{{ .Values.image.bot.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.bot.pullPolicy }}
+          ports:
+            - name: {{ .Values.image.bot.service.internal.name }}
+              containerPort: {{ .Values.image.bot.service.internal.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.image.bot.service.internal.name }}
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.image.bot.service.internal.name }}
+          {{- if .Values.image.bot.env }}
+          env:
+            {{- range .Values.image.bot.env }}
+            - name: {{ .name }}
+              value: "{{ .value }}"
+            {{- end }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+---
+{{- if .Values.image.bot.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: "{{ include "cryptoprice.fullname" . }}-bot"
+  labels:
+    cryptoprice.appName: "{{ include "cryptoprice.fullname" . }}-bot"
+    {{- include "cryptoprice.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "cryptoprice.fullname" . }}
+  minReplicas: {{ .Values.image.bot.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.image.bot.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.image.bot.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.image.bot.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.image.bot.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.image.bot.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+---
+{{- end }}
+{{- if .Values.image.bot.service.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ include "cryptoprice.fullname" . }}-bot"
+  labels:
+    cryptoprice.appName: "{{ include "cryptoprice.fullname" . }}-bot"
+    {{- include "cryptoprice.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.image.bot.service.type }}
+  ports:
+    - port: {{ .Values.image.bot.service.port }}
+      targetPort: {{ .Values.image.bot.service.internal.name }}
+      protocol: TCP
+      name: {{ .Values.image.bot.service.internal.name }}
+  selector:
+    cryptoprice.appName: "{{ include "cryptoprice.fullname" . }}-bot"
+    {{- include "cryptoprice.selectorLabels" . | nindent 4 }}
+---
+{{- end }}
+{{- if .Values.image.bot.ingress.enabled -}}
+{{- $fullName := include "cryptoprice.fullname" . -}}
+{{- $svcPort := .Values.image.bot.service.port -}}
+{{- if and .Values.image.bot.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
+  {{- if not (hasKey .Values.image.bot.ingress.annotations "kubernetes.io/ingress.class") }}
+  {{- $_ := set .Values.image.bot.ingress.annotations "kubernetes.io/ingress.class" .Values.image.bot.ingress.className}}
+  {{- end }}
+{{- end }}
+{{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1
+{{- else if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: "{{ include "cryptoprice.fullname" . }}-bot"
+  labels:
+    cryptoprice.appName: "{{ include "cryptoprice.fullname" . }}-bot"
+    {{- include "cryptoprice.labels" . | nindent 4 }}
+  {{- with .Values.image.bot.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if and .Values.image.bot.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
+  ingressClassName: {{ .Values.image.bot.ingress.className }}
+  {{- end }}
+  {{- if .Values.image.bot.ingress.tls }}
+  tls:
+    {{- range .Values.image.bot.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        - {{ . | quote }}
+        {{- end }}
+      secretName: {{ .secretName }}
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.image.bot.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
+            pathType: {{ .pathType }}
+            {{- end }}
+            backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                name: "{{ $fullName }}-bot"
+                port:
+                  number: {{ $svcPort }}
+              {{- else }}
+              serviceName: {{ $fullName }}
+              servicePort: {{ $svcPort }}
+              {{- end }}
+          {{- end }}
+    {{- end }}
+---
+{{- end }}
