@@ -1,0 +1,117 @@
+replicaCount: 1
+
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets: [ ]
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: { }
+  name: ""
+
+podAnnotations: { }
+
+podSecurityContext: { }
+
+securityContext: { }
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: { }
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: [ ]
+
+resources: { }
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: { }
+
+tolerations: [ ]
+
+affinity: { }
+
+gitea:
+  ingress:
+    enabled: false
+    className: ""
+    annotations: { }
+    hosts:
+      - host: chart-example.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls: [ ]
+  image:
+    pullPolicy: IfNotPresent
+  persistence:
+    storageClass: longhorn
+  postgresql:
+    image:
+      repository: postgres
+      tag: 11.11
+      pullPolicy: IfNotPresent
+    persistence:
+      storageClass: longhorn
+  memcached:
+    image:
+      repository: memcached
+      tag: 1.6.9
+      pullPolicy: IfNotPresent
+    arguments: [ ]
+  signing:
+    enabled: true
+  gitea:
+    admin:
+      username: gitea_admin
+      password: r8sA8CPHD9!bt6d
+      email: "gitea@local.domain"
+    config:
+      APP_NAME: "Gitea: Git"
+      repository:
+        ENABLE_PUSH_CREATE_USER: true
+        ENABLE_PUSH_CREATE_ORG: true
+        DEFAULT_BRANCH: main
+      repository.signing:
+        SIGNING_KEY: key_id
+        SIGNING_NAME: gitea
+        SIGNING_EMAIL: gitea@domain.tld
+      server:
+        DOMAIN: git.domain.tld
+        ROOT_URL: https://git.domain.tld/
+      security:
+        SECRET_KEY: secret_key
+        COOKIE_USERNAME: gitea_awesome
+        COOKIE_REMEMBER_NAME: gitea_incredible
+        MIN_PASSWORD_LENGTH: 6
+        PASSWORD_COMPLEXITY: lower,upper,digit
+        PASSWORD_CHECK_PWN: true
+      service:
+        REGISTER_EMAIL_CONFIRM: true
+        ENABLE_NOTIFY_MAIL: true
+      mailer:
+        ENABLED: true
+        HOST: "SMTP_HOST"
+        FROM: '"Gitea" <noreply+git@domain.tld>'
+        USER: "noreply+git@domain.tld"
+        PASSWD: "SMTP_PASSWORD"
+      session:
+        COOKIE_NAME: i_like_gitea
