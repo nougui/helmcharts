@@ -1,0 +1,16 @@
+apiVersion: v2
+description: Gitea Helm chart for Kubernetes
+name: gitea
+type: application
+version: 0.1.0
+kubeVersion: ">=1.16.0-0"
+keywords:
+  - gitea
+home: https://github.com/Zekihan/helmcharts/tree/main/gitea
+maintainers:
+  - name: nougui
+    email: helmcharts@nougui.net
+dependencies:
+  - name: gitea
+    version: 5.0.9
+    repository: https://dl.gitea.io/charts
