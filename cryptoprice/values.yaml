@@ -25,7 +25,7 @@ image:
   price:
     repository: nougui/crypto-price
     pullPolicy: IfNotPresent
-    tag: 0.2.2
+    tag: 0.2.5
     service:
       enabled: true
       type: ClusterIP
@@ -46,7 +46,7 @@ image:
   bot:
     repository: nougui/cryptoprice-telegrambot
     pullPolicy: IfNotPresent
-    tag: 0.0.4
+    tag: 0.1.1
     service:
       enabled: true
       type: ClusterIP
